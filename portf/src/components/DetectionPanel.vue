@@ -15,7 +15,7 @@
         <div class="spinner-small"></div>
         <span>분석 중입니다...</span>
       </div>
-      <span v-else-if="deepfakeResult">{{ deepfakeResult }} &nbsp; &nbsp; &nbsp; <strong>확률:</strong> {{ probability }}</span>
+      <span v-else-if="deepfakeResult">{{ deepfakeResult }}&nbsp;<strong>확률:</strong> {{ probability }}</span>
       <span v-else>-</span>
     </div>
 
@@ -83,8 +83,23 @@ export default {
 
       } catch (err) {
         console.error("Deepfake 탐지 API 호출 오류:", err);
-        this.$emit('update:error', "딥페이크 탐지에 실패했습니다."); // 부모로 에러 전파
-        this.deepfakeResult = '탐지 실패';
+        /*this.$emit('update:error', "딥페이크 탐지에 실패했습니다."); // 부모로 에러 전파
+        this.deepfakeResult = '탐지 실패';*/
+        if (err.response) {
+          if (err.response.status === 413) {
+            // 파일 크기 초과 에러 (413 Payload Too Large)
+            this.$emit('update:error', "업로드한 파일이 너무 큽니다. 허용된 최대 크기를 확인해주세요.");
+            this.deepfakeResult = '파일 크기 초과';
+          } else {
+            // 그 외 다른 서버 에러 (500 Internal Server Error 등)
+            this.$emit('update:error', "서버에서 오류가 발생하여 딥페이크 탐지에 실패했습니다.");
+            this.deepfakeResult = '서버 오류';
+          }
+        } else {
+          this.$emit('update:error', "서버에 연결할 수 없습니다. 네트워크 상태를 확인해주세요.");
+          this.deepfakeResult = '연결 실패';
+        }
+
       } finally {
         this.isLoading = false;
       }
