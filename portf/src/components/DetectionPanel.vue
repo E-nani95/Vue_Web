@@ -41,7 +41,8 @@ export default {
       deepfakeResult: null,
       probability: null,
       isLoading: false,
-      apiBaseUrl: 'http://localhost:2000',
+      // apiBaseUrl: 'http://localhost:2000',
+      apiBaseUrl: 'https://79b1bea58ae5.ngrok-free.app',
     };
   },
   methods: {

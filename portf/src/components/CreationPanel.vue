@@ -7,6 +7,7 @@
         <div class="loader"></div>
         <span>이미지를 생성 중입니다...</span>
       </div>
+      <!-- <img v-else-if="generatedImageUrl" :src="generatedImageUrl" alt="생성된 이미지"/> -->
       <img v-else-if="generatedImageUrl" :src="generatedImageUrl" alt="생성된 이미지"/>
       <div v-else class="placeholder">
         <span>생성된 이미지가 여기에 표시됩니다.</span>
@@ -40,9 +41,10 @@ export default {
     return {
       imagePrompt: '',
       Account:'',
-      generatedImageUrl: null,
+      generatedImageUrl: '',
       isLoading: false,
-      apiBaseUrl: 'http://localhost:2000',
+      // apiBaseUrl: 'http://localhost:2000',
+      apiBaseUrl: 'https://79b1bea58ae5.ngrok-free.app',
     };
   },
   methods: {
@@ -55,7 +57,7 @@ export default {
       this.$emit('update:error', null); // 부모의 에러 메시지 초기화
       this.isLoading = true;
       this.Account = null;
-      this.generatedImageUrl = null;
+      this.generatedImageUrl = '';
 
       const payload = {
         Account: "TempPrompt",
@@ -65,7 +67,7 @@ export default {
       try {
         const response = await axios.post(`${this.apiBaseUrl}/PromptAPI`, payload);
         console.log(response.data.generatedImageUrl)
-        this.generatedImageUrl = response.data.generatedImageUrl;
+        this.generatedImageUrl = 'data:image/jpeg;base64,'+response.data.generatedImageUrl;
       } catch (err) {
         console.error("이미지 생성 API 호출 오류:", err);
         this.$emit('update:error', "이미지 생성에 실패했습니다."); // 부모로 에러 전파
