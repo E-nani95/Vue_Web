@@ -78,6 +78,8 @@ const detectDeepfake = async () => {
   }
   if(uploadedFile.value.size  >MAX_FILE_SIZE) {
     alert("파일 크기가 제한을 초과합니다.");
+    emit('update:error', "파일 크기가 제한을 초과합니다."); // 부모로 에러 전파
+    deepfakeResult.value = '파일크기 제한초과'
     return;
   }
   
