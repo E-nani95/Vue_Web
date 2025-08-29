@@ -77,7 +77,7 @@ const detectDeepfake = async () => {
     return;
   }
   if(uploadedFile.value.size  >MAX_FILE_SIZE) {
-    alert("사진크기가 너무 큽니다.");
+    alert("파일 크기가 제한을 초과합니다.");
     return;
   }
   
@@ -102,7 +102,7 @@ const detectDeepfake = async () => {
 
   } catch (err) {
     console.error("Deepfake 탐지 API 호출 오류:", err);
-    emit('update:error', "사진크기나 연결상태를 확인해주세요!!"); // 부모로 에러 전파
+    emit('update:error', "연결상태를 확인해주세요!!"); // 부모로 에러 전파
     deepfakeResult.value = '탐지 실패';
 
   } finally {
