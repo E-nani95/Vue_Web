@@ -30,7 +30,7 @@
   </div>
 </template>
 
-<script>
+<!-- <script>
 // 자식 컴포넌트들을 import
 
 import DetectionPanel from '@/components/DetectionPanel.vue';
@@ -62,9 +62,9 @@ export default {
     }
   }
 }
-</script>
+</script> -->
 
-<!-- <script setup>
+<script setup>
 import { ref, watch } from 'vue';
 
 // 자식 컴포넌트들을 import합니다.
@@ -87,7 +87,7 @@ const handleError = (errorMessage) => {
 watch(activeTab, (newTab, oldTab) => {
   error.value = null; // 탭이 변경되면 에러 메시지를 초기화합니다.
 });
-</script> -->
+</script>
 
 <style>
 /* 전역 및 공통 스타일 */

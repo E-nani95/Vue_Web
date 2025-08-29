@@ -32,7 +32,56 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref } from 'vue';
+import axios from 'axios';
+
+// defineEmits를 사용하여 부모 컴포넌트로 이벤트를 보내는 함수를 정의합니다.
+const emit = defineEmits(['update:error']);
+
+// data() 속성을 ref를 사용한 반응형 변수로 변환합니다.
+const imagePrompt = ref('');
+const Account = ref(''); // 이 변수는 현재 코드에서 null로 초기화만 되고 사용되지 않지만, 구조를 그대로 유지했습니다.
+const generatedImageUrl = ref('');
+const isLoading = ref(false);
+const apiBaseUrl = 'https://79b1bea58ae5.ngrok-free.app';
+
+// methods를 일반적인 const async 함수로 변환합니다.
+const generateImage = async () => {
+  if (!imagePrompt.value.trim()) {
+    alert("이미지 생성 커맨드를 입력해주세요.");
+    return;
+  }
+
+  // this.$emit 대신 emit 함수를 사용합니다.
+  emit('update:error', null); // 부모의 에러 메시지 초기화
+  
+  // ref 변수의 값을 변경할 때는 .value를 사용합니다.
+  isLoading.value = true;
+  Account.value = null;
+  generatedImageUrl.value = '';
+
+  const payload = {
+    Account: "TempPrompt",
+    Prompt: imagePrompt.value,
+  };
+
+  try {
+    const response = await axios.post(`${apiBaseUrl}/PromptAPI`, payload);
+    console.log(response.data.generatedImageUrl);
+    // 서버에서 받은 base64 문자열 앞에 Data URI Scheme을 붙여줍니다.
+    generatedImageUrl.value = 'data:image/jpeg;base64,' + response.data.generatedImageUrl;
+  } catch (err) {
+    console.error("이미지 생성 API 호출 오류:", err);
+    emit('update:error', "이미지 생성에 실패했습니다."); // 부모로 에러 전파
+  } finally {
+    isLoading.value = false;
+  }
+};
+</script>
+
+
+<!-- <script>
 import axios from 'axios';
 
 export default {
@@ -76,46 +125,6 @@ export default {
       }
     }
   }
-}
-</script>
-
-<!-- <script setup>
-import axios from 'axios';
-import {ref} from 'vue';
-defineOptions({ name: 'CreationPanel'});
-const imagePrompt =ref('');
-const Account = ref('');
-const generatedImageUrl=ref(null);
-const isLoading = ref(false);
-const apiBaseUrl= "http://localhost:2000" /// 여기 BackEnd 주소
-
-const emit = defineEmits(['update:error']);
-const ganerateImage = async() =>{
-  if(!imagePrompt.value.trim()){
-    alert("이미지 생성 커맨드를 입력해주세요!!")
-    return;
-  }
-
-emit('update:error',null) // 부모의 에러 메시지 초기화
-
-isLoading.value=true;
-Account.value=null;
-generatedImageUrl.value=null;
-
-const payload = {
-  Account: Account.value,
-  Prompt: imagePrompt.value,
-}
-
-try{
-  const response = await axios.post(`${apiBaseUrl}/PromptAPI`,payload);
-  console.log(response.data.generatedImageUrl);
-}catch (err){
-  console.error("이미지 생성 API 호출 오류:", err);
-  emit('update:error',"이미지 생성에 실패했습니다.");
-}finally{
-  isLoading.value=false;
-}
 }
 </script> -->
 
