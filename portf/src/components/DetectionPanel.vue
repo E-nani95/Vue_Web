@@ -74,6 +74,8 @@ const handleFileUpload = (event) => {
 const detectDeepfake = async () => {
   if (!uploadedFile.value) {
     alert("탐지할 이미지 파일을 먼저 첨부해주세요.");
+    emit('update:error', "탐지할 이미지 파일을 먼저 첨부해주세요."); // 부모로 에러 전파
+    deepfakeResult.value = '파일없음'
     return;
   }
   if(uploadedFile.value.size  >MAX_FILE_SIZE) {
