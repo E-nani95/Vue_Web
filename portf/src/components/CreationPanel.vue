@@ -44,7 +44,7 @@ const imagePrompt = ref('');
 const Account = ref(''); // 이 변수는 현재 코드에서 null로 초기화만 되고 사용되지 않지만, 구조를 그대로 유지했습니다.
 const generatedImageUrl = ref('');
 const isLoading = ref(false);
-const apiBaseUrl = 'https://79b1bea58ae5.ngrok-free.app';
+const apiBaseUrl = 'https://9114c55c85ba.ngrok-free.app';
 
 // methods를 일반적인 const async 함수로 변환합니다.
 const generateImage = async () => {
