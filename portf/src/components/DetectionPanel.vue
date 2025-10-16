@@ -51,7 +51,7 @@ const probability = ref(null);
 const isLoading = ref(false);
 const isDragOver = ref(false);
 // const apiBaseUrl = 'https://9114c55c85ba.ngrok-free.app';
-const apiBaseUrl = 'https://55b18b6af3ae.ngrok-free.app';
+const apiBaseUrl = 'https://4007952543ac.ngrok-free.app';
 
 const MAX_FILE_SIZE = 1 * 1024 * 1024;
 
